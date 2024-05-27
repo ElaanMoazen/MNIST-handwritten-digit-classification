@@ -49,91 +49,91 @@ This project demonstrates the process of building and training a Convolutional N
 1. **Data Preprocessing**:
     ```bash
     import numpy as np
-from keras.datasets import mnist
-from keras.utils import to_categorical
+    from keras.datasets import mnist
+    from keras.utils import to_categorical
 
-def load_and_preprocess_data():
-    (X_train, y_train), (X_test, y_test) = mnist.load_data()
-    X_train = X_train.reshape((X_train.shape[0], 28, 28, 1)).astype('float32') / 255
-    X_test = X_test.reshape((X_test.shape[0], 28, 28, 1)).astype('float32') / 255
-    y_train = to_categorical(y_train, 10)
-    y_test = to_categorical(y_test, 10)
-    return (X_train, y_train), (X_test, y_test)
+    def load_and_preprocess_data():
+      (X_train, y_train), (X_test, y_test) = mnist.load_data()
+      X_train = X_train.reshape((X_train.shape[0], 28, 28, 1)).astype('float32') / 255
+      X_test = X_test.reshape((X_test.shape[0], 28, 28, 1)).astype('float32') / 255
+      y_train = to_categorical(y_train, 10)
+      y_test = to_categorical(y_test, 10)
+      return (X_train, y_train), (X_test, y_test)
 
-if __name__ == "__main__":
-    (X_train, y_train), (X_test, y_test) = load_and_preprocess_data()
-    np.save('data/X_train.npy', X_train)
-    np.save('data/y_train.npy', y_train)
-    np.save('data/X_test.npy', X_test)
-    np.save('data/y_test.npy', y_test)
+    if __name__ == "__main__":
+      (X_train, y_train), (X_test, y_test) = load_and_preprocess_data()
+      np.save('data/X_train.npy', X_train)
+      np.save('data/y_train.npy', y_train)
+      np.save('data/X_test.npy', X_test)
+      np.save('data/y_test.npy', y_test)
     ```
 
 2. **Train the Model**:
     ```bash
     import numpy as np
-from model import build_model
+    from model import build_model
 
-# Load preprocessed data
-X_train = np.load('data/X_train.npy')
-y_train = np.load('data/y_train.npy')
-X_test = np.load('data/X_test.npy')
-y_test = np.load('data/y_test.npy')
+    # Load preprocessed data
+     X_train = np.load('data/X_train.npy')
+     y_train = np.load('data/y_train.npy')
+     X_test = np.load('data/X_test.npy')
+     y_test = np.load('data/y_test.npy')
 
-# Build and train the model
-model = build_model((28, 28, 1))
-history = model.fit(X_train, y_train, epochs=15, validation_data=(X_test, y_test))
+   # Build and train the model
+     model = build_model((28, 28, 1))
+     history = model.fit(X_train, y_train, epochs=15, validation_data=(X_test, y_test))
 
-# Save the trained model
-model.save('models/mnist_cnn.h5')
+    # Save the trained model
+     model.save('models/mnist_cnn.h5')
 
     ```
 
 3. **Evaluate the Model**:
     ```bash
     import numpy as np
-from keras.models import load_model
+     from keras.models import load_model
 
-# Load preprocessed data
-X_test = np.load('data/X_test.npy')
-y_test = np.load('data/y_test.npy')
+    # Load preprocessed data
+    X_test = np.load('data/X_test.npy')
+    y_test = np.load('data/y_test.npy')
 
-# Load the trained model
-model = load_model('models/mnist_cnn.h5')
+    # Load the trained model
+    model = load_model('models/mnist_cnn.h5')
 
-# Evaluate the model
-test_loss, test_accuracy = model.evaluate(X_test, y_test)
-print(f'Test Accuracy: {test_accuracy * 100:.2f}%')
+    # Evaluate the model
+    test_loss, test_accuracy = model.evaluate(X_test, y_test)
+    print(f'Test Accuracy: {test_accuracy * 100:.2f}%')
 
     ```
 
 4. **Plot Training and Validation Results**:
     ```bash
     import matplotlib.pyplot as plt
-import numpy as np
+    import numpy as np
 
-# Load history
-history = np.load('data/history.npy', allow_pickle=True).item()
+    # Load history
+    history = np.load('data/history.npy', allow_pickle=True).item()
 
-# Plot training & validation accuracy values
-plt.figure(figsize=(12, 5))
-plt.subplot(1, 2, 1)
-plt.plot(history['accuracy'])
-plt.plot(history['val_accuracy'])
-plt.title('Model accuracy')
-plt.xlabel('Epoch')
-plt.ylabel('Accuracy')
-plt.legend(['Train', 'Validation'], loc='upper left')
+    # Plot training & validation accuracy values
+    plt.figure(figsize=(12, 5))
+    plt.subplot(1, 2, 1)
+    plt.plot(history['accuracy'])
+    plt.plot(history['val_accuracy'])
+    plt.title('Model accuracy')
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy')
+    plt.legend(['Train', 'Validation'], loc='upper left')
 
-# Plot training & validation loss values
-plt.subplot(1, 2, 2)
-plt.plot(history['loss'])
-plt.plot(history['val_loss'])
-plt.title('Model loss')
-plt.xlabel('Epoch')
-plt.ylabel('Loss')
-plt.legend(['Train', 'Validation'], loc='upper left')
+    # Plot training & validation loss values
+    plt.subplot(1, 2, 2)
+    plt.plot(history['loss'])
+    plt.plot(history['val_loss'])
+    plt.title('Model loss')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.legend(['Train', 'Validation'], loc='upper left')
 
-plt.show()
+    plt.show()
 
     ```
 
