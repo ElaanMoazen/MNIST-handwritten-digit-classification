@@ -68,7 +68,33 @@ This project demonstrates the process of building and training a Convolutional N
       np.save('data/y_test.npy', y_test)
     ```
 
-2. **Train the Model**:
+2. **Build The Model**
+```bash
+from keras.models import Sequential
+from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
+
+def build_model(input_shape):
+    model = Sequential()
+    model.add(Conv2D(32, (3, 3), activation='relu', input_shape=input_shape))
+    model.add(MaxPooling2D((2, 2)))
+    model.add(Conv2D(64, (3, 3), activation='relu'))
+    model.add(MaxPooling2D((2, 2)))
+    model.add(Conv2D(128, (3, 3), activation='relu'))
+    model.add(MaxPooling2D((2, 2)))
+    model.add(Flatten())
+    model.add(Dense(128, activation='relu'))
+    model.add(Dense(10, activation='softmax'))
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    return model
+
+if __name__ == "__main__":
+    model = build_model((28, 28, 1))
+    model.summary()
+```
+
+
+
+3. **Train the Model**:
     ```bash
     import numpy as np
     from model import build_model
@@ -88,7 +114,7 @@ This project demonstrates the process of building and training a Convolutional N
 
     ```
 
-3. **Evaluate the Model**:
+4. **Evaluate the Model**:
     ```bash
     import numpy as np
      from keras.models import load_model
@@ -106,7 +132,7 @@ This project demonstrates the process of building and training a Convolutional N
 
     ```
 
-4. **Plot Training and Validation Results**:
+5. **Plot Training and Validation Results**:
     ```bash
     import matplotlib.pyplot as plt
     import numpy as np
